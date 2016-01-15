@@ -16,10 +16,24 @@ object MovieLensDataset {
     sc.setLogLevel("WARN")
 
     val userData = sc.textFile("src/main/resources/datasets/ml-100k/u.user")
-    val userFields = userData.map(line => line.split("|"))
-    val numOfUsers = userData.count()
-    val numOfGenders = userData.map(fields => fields(2)).distinct().count()
+    val userFields = userData.map(line => line.split("\\|"))
+    val numOfUsers = userFields.count()
+    val numOfGenders = userFields.map(fields => fields(2)).distinct().count()
+    val numOfOccupations = userFields.map(fields => fields(3)).distinct().count()
+    val numOfZipcodes = userFields.map(fields => fields(4)).distinct().count()
+
     println(s"Num of users: $numOfUsers")
-    println(numOfGenders)
+    println(s"Num of genders: $numOfGenders")
+    println(s"Num of occuptations: $numOfOccupations")
+    println(s"Num of zipcodes: $numOfZipcodes")
+
+    val allAges = userFields.map(fields => fields(1).toInt).collect()
+    val ageArrangement = userFields.map({
+      fieldArr => (fieldArr(1), 1)
+    }).reduceByKey((a, b) => a + b).collect().sortBy(_._2)
+
+    for (age <- ageArrangement){
+      println(age)
+    }
   }
 }
