@@ -30,10 +30,21 @@ object MovieLensDataset {
     val allAges = userFields.map(fields => fields(1).toInt).collect()
     val ageArrangement = userFields.map({
       fieldArr => (fieldArr(1), 1)
-    }).reduceByKey((a, b) => a + b).collect().sortBy(_._2)
+    }).reduceByKey((a, b) => a + b).sortBy(_._2).collect()
 
-    for (age <- ageArrangement){
-      println(age)
-    }
+    val occupationCount = userFields.map({
+      fieldArr => (fieldArr(3), 1)
+    }).reduceByKey(_ + _).sortBy(_._2).collect()
+
+//    for (occupation <- occupationCount){
+//      println(occupation)
+//    }
+
+    //This and previous occupation count will be the exact same, except for sort order
+    val occupationCountByValue = userFields.map(fieldArr => fieldArr(3)).countByValue()
+
+//    for (occupation <- occupationCountByValue){
+//      println(occupation)
+//    }
   }
 }
