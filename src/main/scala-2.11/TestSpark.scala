@@ -28,17 +28,24 @@ object TestSpark {
       case(user, product, price) => price.toDouble
     }).fold(0)((acc, i) => acc + i)
 
-    val productByPopularity = data.map({
+    val productsByPopularity = data.map({
       case (user, product, price) => (product, 1)
     }).reduceByKey(_ + _)
     .collect()
     .sortWith((a, b) => a._2 > b._2 )
+    val mostPopular = productsByPopularity(0)
 
-    val mostPopular = productByPopularity(0)
+    val productsByRevenue = data.map({
+      case (user, product, price) => (product, price.toDouble)
+    }).reduceByKey(_ + _)
+    .collect()
+    .sortWith((a, b) => a._2 > b._2)
+    val mostRevenue = productsByRevenue(0)
 
     println("num of purchases: " + numPurchases)
     println("unique users: " + uniqueUsers)
     println("total revenue: " + totalRevenue)
     println("Most popular: " + mostPopular)
+    println("Most revenue from: " + mostRevenue)
   }
 }
