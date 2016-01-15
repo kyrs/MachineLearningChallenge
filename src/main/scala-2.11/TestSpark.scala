@@ -33,7 +33,6 @@ object TestSpark {
     }).reduceByKey(_ + _)
     .collect()
     .sortWith((a, b) => a._2 > b._2 )
-
     val mostPopular = productsByPopularity(0)
 
     val productsByRevenue = data.map({
@@ -41,7 +40,6 @@ object TestSpark {
     }).reduceByKey(_ + _)
     .collect()
     .sortWith((a, b) => a._2 > b._2)
-
     val mostRevenue = productsByRevenue(0)
 
     println("num of purchases: " + numPurchases)
