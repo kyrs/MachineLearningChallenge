@@ -35,7 +35,6 @@ object TestSpark {
 
     val mostPopular = productByPopularity(0)
 
-
     println("num of purchases: " + numPurchases)
     println("unique users: " + uniqueUsers)
     println("total revenue: " + totalRevenue)
