@@ -16,6 +16,7 @@ object TestSpark {
 
     val data = sc.textFile("src/main/resources/datasets/SparkLearnSet.csv")
       .map(line => line.split(",")).map(purchaseRecord => (purchaseRecord(0), purchaseRecord(1), purchaseRecord(2)))
+    data.cache()
 
     val numPurchases = data.count()
 
