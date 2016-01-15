@@ -14,7 +14,11 @@ libraryDependencies  ++= Seq(
   "org.scalanlp" %% "breeze-natives" % "0.11.2",
   // the visualization library is distributed separately as well.
   // It depends on LGPL code.
-  "org.scalanlp" %% "breeze-viz" % "0.11.2"
+  "org.scalanlp" %% "breeze-viz" % "0.11.2",
+
+  "org.apache.spark" %% "spark-core" % "1.6.0",
+
+  "org.apache.spark" %% "spark-mllib" % "1.3.1"
 )
 
 resolvers ++= Seq(
@@ -23,5 +27,3 @@ resolvers ++= Seq(
   "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
   "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/"
 )
-
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.0"

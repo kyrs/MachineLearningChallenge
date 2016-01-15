@@ -1,3 +1,4 @@
+import org.apache.spark.mllib.stat
 import org.apache.spark.{SparkContext, SparkConf}
 
 /**
@@ -17,7 +18,37 @@ object MovieLensDataset {
 
 //    processUsers(sc)
 
-    processMovieDataset(sc)
+//    processMovieDataset(sc)
+
+    processRatingDataset(sc)
+  }
+
+  def processRatingDataset(sc: SparkContext): Unit ={
+    val ratingData = sc.textFile("src/main/resources/datasets/ml-100k/u.data")
+    val userData = sc.textFile("src/main/resources/datasets/ml-100k/u.user")
+    val movieData = sc.textFile("src/main/resources/datasets/ml-100k/u.item")
+    val movieFields = movieData.map(lines => lines.split("\\|"))
+    val userFields = userData.map(line => line.split("\\|"))
+    val numOfUsers = userFields.count()
+    val numRatings = ratingData.count()
+    val numOfMovies = movieData.count()
+
+    val ratingFields = ratingData.map(line => line.split("\t"))
+    val allRatings = ratingFields.map(fields => fields(2))
+    val maxRating = allRatings.reduce((a, b) => math.max(a.toInt, b.toInt).toString)
+    val minRating = allRatings.reduce((a, b) => math.min(a.toInt, b.toInt).toString)
+    val averageRating = allRatings.reduce((a, b) => (a.toDouble + b.toDouble).toString).toDouble / allRatings.count()
+    val ratingsPerUser = numRatings/numOfUsers
+    val ratingsPerMovie = numRatings/numOfMovies
+
+
+    println(minRating)
+    println(maxRating)
+    println(averageRating)
+    println(ratingsPerUser)
+    println(ratingsPerMovie)
+    println(allRatings.mean())
+
   }
 
   def processMovieDataset(sc: SparkContext): Unit ={
