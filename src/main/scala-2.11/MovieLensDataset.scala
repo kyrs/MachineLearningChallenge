@@ -47,7 +47,7 @@ object MovieLensDataset {
     println(averageRating)
     println(ratingsPerUser)
     println(ratingsPerMovie)
-    println(allRatings.mean())
+//    println(allRatings.mean())
 
   }
 
