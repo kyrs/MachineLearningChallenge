@@ -25,13 +25,16 @@ object DataValidation {
 //    println(retCanRows.first())
 
     val transactionFields = transactionRows.map(line => line.split(","))
-    val trnsMerchantFieldDistinct = transactionFields.map(lineArr => lineArr(merchantIndex)).distinct()
+    val trnsMerchantFieldDistinct = transactionFields.map(lineArr => lineArr(merchantIndex)).distinct().map(x => (x, 1))
 
     val retFields = retCanRows.map(line => line.split(","))
-    val retMerchantFieldDistinct = retFields.map(lineArr => lineArr(retMerchantIndex)).distinct()
+    val retMerchantFieldDistinct = retFields.map(lineArr => lineArr(retMerchantIndex)).distinct().map(x => (x, 1))
 
-    println(trnsMerchantFieldDistinct.count() + " " +  retMerchantFieldDistinct.count())
+    val merchantsNotIn = trnsMerchantFieldDistinct.rightOuterJoin(retMerchantFieldDistinct).filter(x => x._2._1 == None).count()
 
+    println(trnsMerchantFieldDistinct.count())
+    println(retMerchantFieldDistinct.count())
+    println(merchantsNotIn)
 
   }
 }
