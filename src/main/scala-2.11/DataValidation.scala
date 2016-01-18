@@ -30,11 +30,11 @@ object DataValidation {
     val retFields = retCanRows.map(line => line.split(","))
     val retMerchantFieldDistinct = retFields.map(lineArr => lineArr(retMerchantIndex)).distinct().map(x => (x, 1))
 
-    val merchantsNotIn = trnsMerchantFieldDistinct.rightOuterJoin(retMerchantFieldDistinct).filter(x => x._2._1 == None).count()
+    val merchantsNotIn = trnsMerchantFieldDistinct.rightOuterJoin(retMerchantFieldDistinct).filter(x => x._2._1 == None)
 
     println(trnsMerchantFieldDistinct.count())
     println(retMerchantFieldDistinct.count())
-    println(merchantsNotIn)
+    println(merchantsNotIn.count())
 
   }
 }

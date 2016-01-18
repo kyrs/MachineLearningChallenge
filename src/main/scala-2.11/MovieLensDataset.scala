@@ -40,14 +40,18 @@ object MovieLensDataset {
     val averageRating = allRatings.reduce((a, b) => (a.toDouble + b.toDouble).toString).toDouble / allRatings.count()
     val ratingsPerUser = numRatings/numOfUsers
     val ratingsPerMovie = numRatings/numOfMovies
-
+    val userRatingsGrouped = ratingFields.map(fields => (fields(0).toInt, fields(2).toInt)).groupByKey()
+    val userRatingsCount = userRatingsGrouped.map(fields => (fields._1, fields._2.toArray)).map(fields => (fields._1, fields._2.length)).sortBy(_._1)
 
     println(minRating)
     println(maxRating)
     println(averageRating)
     println(ratingsPerUser)
     println(ratingsPerMovie)
-//    println(allRatings.mean())
+    val userRatingSample = userRatingsCount.take(5)
+    for (rating <- userRatingSample){
+      println(rating)
+    }
 
   }
 
