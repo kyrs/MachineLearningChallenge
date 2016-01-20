@@ -16,11 +16,11 @@ object MovieLensDataset {
     val sc = new SparkContext(conf)
     sc.setLogLevel("WARN")
 
-//    processUsers(sc)
+    processUsers(sc)
 
 //    processMovieDataset(sc)
 
-    processRatingDataset(sc)
+//    processRatingDataset(sc)
   }
 
   def processRatingDataset(sc: SparkContext): Unit ={
@@ -66,8 +66,14 @@ object MovieLensDataset {
       }
     })
     val yearsFiltered = years.filter(x => x != 1900)
+    val yearsMean = yearsFiltered.mean()
 
-    val ageAggregated = yearsFiltered.map(x => 1998 - x).countByValue().toArray.sortBy(_._1)
+    val yearsFilled = years.map({
+      case 1900 => yearsMean.toInt
+      case x => x.toInt
+    })
+
+    val ageAggregated = yearsFilled.map(x => 1998 - x).countByValue().toArray.sortBy(_._1)
     for (age <- ageAggregated){
       println(age)
     }
@@ -105,5 +111,11 @@ object MovieLensDataset {
     //    for (occupation <- occupationCountByValue){
     //      println(occupation)
     //    }
+
+    val occupationsIndexed = userFields.map({
+      fields => fields(3)
+    }).distinct().collect()
+
+    val occupationMap = occupationsIndexed.zipWithIndex.toMap
   }
 }
