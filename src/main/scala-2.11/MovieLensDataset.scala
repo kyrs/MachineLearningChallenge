@@ -1,3 +1,4 @@
+import breeze.linalg.{normalize, norm, SparseVector}
 import org.apache.spark.mllib.stat
 import org.apache.spark.{SparkContext, SparkConf}
 
@@ -12,15 +13,15 @@ import org.apache.spark.{SparkContext, SparkConf}
 object MovieLensDataset {
   def main (args: Array[String]) {
     val conf = new SparkConf()
-      .setMaster("local[2]").setAppName("Test App").set("spark.executor.memory", "1g")
+      .setMaster("local[2]").setAppName("Test App").set("spark.executor.memory", "2g")
     val sc = new SparkContext(conf)
     sc.setLogLevel("WARN")
 
-    processUsers(sc)
+//    processUsers(sc)
 
 //    processMovieDataset(sc)
 
-//    processRatingDataset(sc)
+    processRatingDataset(sc)
   }
 
   def processRatingDataset(sc: SparkContext): Unit ={
@@ -43,15 +44,35 @@ object MovieLensDataset {
     val userRatingsGrouped = ratingFields.map(fields => (fields(0).toInt, fields(2).toInt)).groupByKey()
     val userRatingsCount = userRatingsGrouped.map(fields => (fields._1, fields._2.toArray)).map(fields => (fields._1, fields._2.length)).sortBy(_._1)
 
-    println(minRating)
-    println(maxRating)
-    println(averageRating)
-    println(ratingsPerUser)
-    println(ratingsPerMovie)
-    val userRatingSample = userRatingsCount.take(5)
-    for (rating <- userRatingSample){
-      println(rating)
-    }
+    val rawTitles = movieFields.map(fields => fields(1))
+    val titleFiltered = rawTitles.map(title => title.replaceAll("\\((\\w+)\\)", ""))
+
+//    println(minRating)
+//    println(maxRating)
+//    println(averageRating)
+//    println(ratingsPerUser)
+//    println(ratingsPerMovie)
+//    val userRatingSample = userRatingsCount.take(5)
+//    for (rating <- userRatingSample){
+//      println(rating)
+//    }
+
+    val titleTerms = titleFiltered.map(title => title.split(" "))
+    val allTerms = titleTerms.flatMap(x => x).distinct().zipWithIndex().collectAsMap()
+
+//    println(allTerms.count(x => true))
+//    println(allTerms.get("Dead").get)
+//    println(allTerms.get("Rooms").get )
+
+    val allTermsBroadcast = sc.broadcast(allTerms)
+    val vectors = titleTerms.map( terms => createVector(terms, allTermsBroadcast.value))
+//    for (i <- vectors.take(5)){
+//      println(normalize(i))
+//    }
+
+    val y = vectors.first()
+
+    println(normalize(y))
 
   }
 
@@ -118,4 +139,19 @@ object MovieLensDataset {
 
     val occupationMap = occupationsIndexed.zipWithIndex.toMap
   }
+
+  def createVector(terms: Array[String], termDict: scala.collection.Map[String, Long]): SparseVector[Double] = {
+    val numTerms = termDict.count(_ => true)
+    val x =  SparseVector.zeros[Double](numTerms)
+    for (t <- terms){
+      if (termDict.get(t).isDefined){
+        x(termDict.get(t).get.toInt) = 1
+      }
+    }
+    x
+  }
+
+//  def normalize(s: SparseVector[Int]): SparseVector[Int] = {
+//    breeze.linalg.normalize(s)
+//  }
 }
