@@ -6,7 +6,7 @@ Date Given : 25 Feb 2016
 Date started: 3 march 2016
 created by Kumar shubham
 email id: kumarshubham652@gmail.com
--------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------
 library used: 
 	1.pandas
 	2. multiprocessing
@@ -20,7 +20,7 @@ platform: python
 hardware used: Ubuntu 8GB ram + 8 core processor 
 
 How to run :
----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------
 	1.	put transaction data in trans Folder renamed as transaction
 	2. 	put the profit data in profit Folder renamed as profit
 	3. 	put the cancel Data in cancel data folder renamed as cancel
@@ -29,7 +29,7 @@ How to run :
 
 
 Key Feature:
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------
 	since Python give an excellent input output buffer system and with present memory restriction. Data has been divided into multiple 		frame and processed acoordingly
 
 	use of Bradely-Terry(sigmoid adaptation) for rating
@@ -38,7 +38,7 @@ Key Feature:
 Description of file:
 
 	FeatureExtraction file :
-----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------
 	1. F_sell : This  is the ratio of net discount given by the merchant to the actuall mrp
 	formula = (mrp-(s.p-discount*sp))/mrp
 
@@ -73,7 +73,7 @@ Description of file:
 	Feature for profit Data:
 	F_profit: comission given by merchant to paytm
 
- ---------------------------------------------------------------------------------------------------------------------------------------
+ -------------------------------------------
 Scoring:
 
 idea : Rating of merchant is done on a competative manner. Each merchant is compared with merchant in same T4 category and rated on the basis of their performance
