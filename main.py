@@ -49,7 +49,7 @@ if __name__ == "__main__":
     transData = pd.read_csv("./trans/transaction")
     paytmSlice =slice(transData,cacheFolder)
     paytmSlice.slice(fileSlice)
-
+    del transData
     ####################################################
     # Extracting the features from all the 5 data frame#
     ####################################################
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         dataFrame = pd.read_csv(cacheFolder+fileName+".csv")
         paytmFeature =featureExtraction(dataFrame,"-","-")
         temp = paytmFeature.transFeatureExtraction()
-        print ("saving "+ filename )
+        print ("saving "+ fileName )
         temp.to_csv(cacheFolder+fileName+"F.csv",index=False)
         del dataFrame
         del temp
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     print "Merging The dataFrame"
     listFile = [cacheFolder +fileSlice+str(i+1)+"F.csv" for i in range(5)]
-    print listFile
+    #print listFile
     dataFrameList = []
     for i in listFile:
         df = pd.read_csv(i)
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     temp.to_csv(resultFolder+"cancelScore.csv",index=False)
 
     del temp
-
+    print "merging the frame"
     transData = pd.read_csv("./result/transScore.csv")
     profitData = pd.read_csv("./result/profitScore.csv")
     cancelData = pd.read_csv("./result/cancelScore.csv")

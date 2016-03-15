@@ -4,42 +4,42 @@
 	Date 10-03-2016
 
 	Description: Following file extract features from the given dataFrame
-		
-		Features From Transaction Data :
 
-			1. F_sell : This basically ratio of net discount given by the merchant to the actuall mrp
-						formula = (mrp-(s.p-discount*sp))/mrp
+	Features From Transaction Data :
 
-			2. F_product : total no of product selled by a given merchant in given T4 category.
+	1. F_sell : This  is the ratio of net discount given by the merchant to the actuall mrp
+	formula = (mrp-(s.p-discount*sp))/mrp
 
-			3. F_dispatch: 
-							feature to identify how fast merchant can dispatch the product
-							ratio =   (Deadline to deliver the product -product Dispatched by merchant)/( deadline to deliver the product - time when merchant was informed)
+	2. F_product : total no of product selled by a given merchant in given T4 category.
 
-							case 1: 
-								dispatch and info is provided before deadline
-								F_dispatch = ratio
+	3. F_dispatch: 
+	feature to identify how fast merchant can dispatch the product
+	ratio =   (Deadline to deliver the product -product Dispatched by merchant)/( deadline to deliver the product - time when merchant was informed)
 
-							case 2: 
-								dispatch and info both are provided after deadline
-								F_dispatch = 1/ratio
+	case 1: 
+	dispatch and info is provided before deadline
+	F_dispatch = ratio
 
-							case 3:
-								info is provided 6hr before deadline and inspite of that  merchant failed to deliver
-								F_dispatch = ratio
+	case 2: 
+	dispatch and info both are provided after deadline
+	F_dispatch = 1/ratio
 
-							case 4 : info is provided after 6hr and still he fail to deliver (delay in providing info to merchant)
-								F_dispatch = 1/ratio
+	case 3:
+	info is provided 6hr before deadline and inspite of that  merchant failed to deliver
+	F_dispatch = ratio
 
-							Assumption: merchant need 6hr prior info for proper handling of the good 
+	case 4 : info is provided after 6hr and still he fail to deliver (delay in providing info to merchant)
+	F_dispatch = 1/ratio
 
-			Feature for cancel Data:
+	Assumption: merchant need 6hr prior info for proper handling of the good 
 
-			F_csatisfy = ratio of product not returned by customer to that of total product ordered(collected from transaction data)
-			F_psent  = ratio of product sent by merchant to that of total product ordered(collected from transaction data)
+	Feature for cancel Data:
 
-			Feature for profit Data:
-			F_profit: comission given by merchant to paytm
+	F_csatisfy = ratio of product not returned by customer to that of total product ordered(collected from transaction data)
+	F_psent  = ratio of product sent by merchant to that of total product ordered(collected from transaction data)
+
+	Feature for profit Data:
+	F_profit: comission given by merchant to paytm
 
 '''
 
@@ -149,6 +149,7 @@ class featureExtraction(object):
 			## this file extract meaningful features from big size csv file and compress it to small size 
 		print "Starting transFeature extraction !!"
 		unq_merchant = list(set(dataGenerated["merchant_id"]))
+		listData =[]
 		for merchant in unq_merchant:
 			print unq_merchant.index(merchant)
 			
