@@ -30,7 +30,6 @@ How to run :
 
 Key Feature:
 --------------------------------------------------
-	since Python give an excellent input output buffer system and with present memory restriction. Data has been divided into multiple 		frame and processed acoordingly
 
 	use of Bradely-Terry(sigmoid adaptation) for rating
 
